@@ -9,7 +9,7 @@
 (format t "******************************~%")
 
 (defparameter *adyacencia_matriz* (make-array '(30 30) :initial-element 0))
-(defparameter *acceso_matriz* (make-array '(30 30) :initial-element 0))
+;(defparameter *acceso_matriz* (make-array '(30 30) :initial-element 0))
 (defparameter *vector_estados* (make-array 30 :initial-element -1)) ;{-1, -1, -1, -1, -1} 
 
 (defparameter *numero_vertices* 0) 
@@ -19,11 +19,27 @@
 (defparameter *lista_aristas* '()) ;({})
 (defparameter *pila* '())
 
+(defparameter *opcion* 0)
+
 (defun main()
     (format t "Hola, este es un programa para uasar DFS ~%")
-    (definir_numero_vertices)
-    (insertar_matriz_adyacencia)
-    (definir_vertice_inicial)
+    (format t "Ingrese [0] leer CSV o [1] manualmente ~%")
+    (setf *opcion* (read))
+    (case *opcion*
+        (0
+            (leer_archivo)
+        )
+        (1
+            (definir_numero_vertices)
+            (insertar_matriz_adyacencia)
+            (definir_vertice_inicial)
+        )
+        (otherwise
+            (format t "Valor invalido ~%")
+            (main)
+        )
+
+    )
     (push *vertice_inicial* *pila*) ;Agrega a la pila el nodo inicial
     (setf (aref *vector_estados* *vertice_inicial*) 0) ;Modifica el estado del nodo inicial a descubierto o 0 del vector de estados en
     (setf *lista_vertices_alcanzables* (append *lista_vertices_alcanzables* (list *vertice_inicial*))) ;Agrgar a la lista de nodos alcanzables el nodo inicial
@@ -37,6 +53,36 @@
     (format t "Lista de nodos alcanzables = ~a ~%" *lista_vertices_alcanzables*)
     ;(format t "Lista de aristas = ~a ~%" *lista_aristas*)
     (imprimir_lista_aristas)
+)
+
+(defun leer_archivo ()
+    (let ((contador_filas 0) (contador_columnas 0)) ;para indicar la fila del archivo
+        (with-open-file (stream "adyacencia_matriz.csv" :direction :input)
+            (loop for linea = (read-line stream nil) while linea do
+                (format t "Leí: ~a~%" linea)
+                (loop for j from 0 below (length linea) do
+                    (if (= contador_filas 0)
+                        (setf *numero_vertices* (digit-char-p (aref linea j)))
+                    )
+                    (if (= contador_filas 1)
+                        (setf *vertice_inicial* (digit-char-p (aref linea j)))
+                    )
+                    (when (and (char= (aref linea j) #\1) (>= contador_filas 2))
+                        (setf (aref *adyacencia_matriz* (- contador_filas 2) contador_columnas) 1)
+                        ;(format t "Matriz de adyacencia ~a en ~a,~a ~%" (aref *adyacencia_matriz* (- contador_filas 2) contador_columnas) (- contador_filas 2) contador_columnas)
+                        (incf contador_columnas)
+                    )
+                    (when (and (char= (aref linea j) #\0) (>= contador_filas 2))
+                        (setf (aref *adyacencia_matriz* (- contador_filas 2) contador_columnas) 0)
+                        ;(format t "Matriz de adyacencia ~a en ~a,~a ~%" (aref *adyacencia_matriz* (- contador_filas 2) contador_columnas) (- contador_filas 2) contador_columnas)
+                        (incf contador_columnas)
+                    )
+                )
+                (setq contador_columnas 0)
+                (incf contador_filas)
+            )
+        )
+    )
 )
 
 (defun definir_numero_vertices()
@@ -71,7 +117,7 @@
         (format t "Lista de aristas = ")
         (loop for j in *lista_aristas* do 
             (if (= (mod contador 2) 1)
-                (format t "{~a,~a}, " anterior j) 
+                (format t "(~a,~a), " anterior j) 
                     (setf anterior j) ;else  
             )
             ;(format t "j{~a} " j)
