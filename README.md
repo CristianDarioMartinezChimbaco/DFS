@@ -1,13 +1,58 @@
-# DFS
-Algoritmo de busqueda profunda DFS
+# DFS — Algoritmo de Búsqueda en Profundidad
 
-Se solicita Matriz de adyacencia del grafo principal 
+Este programa implementa el algoritmo Depth-First Search (DFS) utilizando una matriz de adyacencia como representación del grafo.
 
-Entonces suponiendo que en el programa ingreso la matriz adyacente de un grafo, crea un arreglo, lista o vector en donde dado el nodo (con números, ej nodo numero 1, entonce busco directamente en la posiciona 1 del arreglo) averiguo si esta en -1, 0 u +1 (No visitado, en proceso, visitado)
+## Descripción general
 
-Solicita vertice inicial
+### Entrada
+El programa solicita al usuario la matriz de adyacencia del grafo principal.
 
-Da como resultado lista de vertices que se alcanzan = {c,a,b,d} y lista de aristas {(c, a), (a, b), (a, d), (a, c) }
+### Estructuras internas
+Se crea un arreglo (vector o lista) para manejar el estado de cada nodo con la siguiente codificación:
 
-La pila se llena lo maximo posible subiendo y vajando de nivel para despues baciarla
-Para compilar en el mismo directorio ejecutar en la terminal "sbcl --script main.lisp" con lisp sbcl previamente adquirido 
+-1 → No visitado
+
+0 → En proceso
+
++1 → Visitado
+
+El número del nodo corresponde directamente a su posición en el arreglo (por ejemplo, el nodo 1 se consulta en la posición 1).
+
+### Parámetro de ejecución
+El programa solicita el vértice inicial desde donde comenzará la búsqueda en profundidad.
+
+### Resultados esperados
+
+Lista de vértices alcanzados, por ejemplo:
+{c, a, b, d}
+
+Lista de aristas recorridas durante la búsqueda, por ejemplo:
+{(c, a), (a, b), (a, d), (a, c)}
+
+### Comportamiento de la pila
+Durante la ejecución, la pila se llena al máximo posible mientras el algoritmo profundiza; luego, en la etapa de retroceso (backtracking), la pila se vacía siguiendo la lógica natural del DFS.
+
+## Ejecución
+### Cómo obtener e instalar SBCL
+
+SBCL (Steel Bank Common Lisp) es uno de los compiladores e intérpretes de Common Lisp más usados. Puedes instalarlo fácilmente según tu sistema operativo.
+
+### Linux (Ubuntu / Debian)
+La forma más sencilla es instalarlo desde los repositorios oficiales:
+```bash
+sudo apt update
+sudo apt install sbcl
+```
+
+### Windows
+
+1. [Ve al sitio oficial](https://www.sbcl.org/platform-table.html)
+2. Descarga el instalador para Windows (.msi).
+3. Ejecuta el instalador
+
+### Ejecutar
+Asegúrate de tener SBCL instalado. Para ejecutar el programa desde el mismo directorio, usa el siguiente comando en la terminal:
+```bash
+sbcl --script main.lisp
+```
+
