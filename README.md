@@ -5,6 +5,16 @@ Este programa implementa el algoritmo Depth-First Search (DFS) utilizando una ma
 ## Descripción general
 
 ### Entrada
+El programa pregunta si quieres ingresar la matriz manualmente o prefieres usar los archivos csv el cual debe contener en la primera fila el numero de nodos, en la segunda fila el vertice inicial y por ultimo la matriz fila a fila (cada dato separado por comas), ejemplo:
+```bash
+5
+0
+0,1,0,0,0
+1,0,0,0,0
+0,0,0,0,1
+0,0,1,0,0
+0,0,0,1,0
+```
 El programa solicita al usuario la matriz de adyacencia del grafo principal.
 
 ### Estructuras internas
